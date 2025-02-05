@@ -1,20 +1,19 @@
 #include "Sparta_Character.h"
+#include "Camera/CameraComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 
 ASparta_Character::ASparta_Character()
 {
-	PrimaryActorTick.bCanEverTick = true;
-}
+	PrimaryActorTick.bCanEverTick = false;
 
-void ASparta_Character::BeginPlay()
-{
-	Super::BeginPlay();
-	
-}
+    SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
+    SpringArmComp->SetupAttachment(RootComponent);
+    SpringArmComp->TargetArmLength = 300.0f;
+    SpringArmComp->bUsePawnControlRotation = true;
 
-void ASparta_Character::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
+    CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+    CameraComp->SetupAttachment(SpringArmComp, USpringArmComponent::SocketName);
+    CameraComp->bUsePawnControlRotation = false;
 }
 
 void ASparta_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
